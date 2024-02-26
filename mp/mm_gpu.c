@@ -6,9 +6,10 @@
 #define N 2000
 void mm(double *a, double *b, double *c)
 {
-     #pragma omp target teams distribute parallel for collapse(2)  default(none) shared(a,b,c)                                    
-    //  #pragma omp target map(to:a, b) map(from:c)
-    //  #pragma parallel for collapse(2)  default(none) shared(a,b,c) 
+    // #pragma omp target teams distribute parallel for collapse(2)  default(none) shared(a,b,c) // 18 sec with o3 fast                                    
+    // #pragma omp target teams loop collapse(2) default(none) shared(a,b,c)  //super fast with o3 flag     0.9 sec with o3                             
+    //  #pragma omp target map(to:a, b) map(from:c) // with this implentation worst speed
+     #pragma parallel for collapse(2)  default(none) shared(a,b,c)  // without target time is 19sec good
      for (int i = 0; i < N; i++){
         for (int j = 0; j < N; j++){
             double sum = 0;
